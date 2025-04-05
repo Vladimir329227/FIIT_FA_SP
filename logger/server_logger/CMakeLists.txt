@@ -12,6 +12,12 @@ target_include_directories(
         ./include)
 
 target_link_libraries(
+        mp_os_lggr_srvr_lggr 
+        PUBLIC 
+        httplib::httplib)
+
+
+target_link_libraries(
         mp_os_lggr_srvr_lggr
         PUBLIC
         mp_os_cmmn)

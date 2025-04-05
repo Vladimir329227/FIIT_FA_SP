@@ -8,8 +8,9 @@
 #include <crow.h>
 #include <unordered_map>
 #include <logger.h>
-//#include <mutex>
+#include <mutex>
 #include <shared_mutex>
+#include <nlohmann/json.hpp>
 
 class server
 {
@@ -17,7 +18,7 @@ class server
 
     std::unordered_map<int, std::unordered_map<logger::severity, std::pair<std::string, bool>>> _streams;
 
-    std::shared_mutex _mut;
+    std::mutex  _mut;
 
 public:
 

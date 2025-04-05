@@ -10,7 +10,10 @@ logger_builder& client_logger_builder::add_file_stream(
     std::string const &stream_file_path,
     logger::severity severity) &
 {
-    throw not_implemented("logger_builder& client_logger_builder::add_file_stream(std::string const &,logger::severity ) &", "your code should be here...");
+    //auto& streams = _output_streams[severity].first;
+
+    throw not_implemented("logger_builder& client_logger_builder::add_console_stream(logger::severity) &", "your code should be here...");
+    
 }
 
 logger_builder& client_logger_builder::add_console_stream(

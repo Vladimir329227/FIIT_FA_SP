@@ -1,13 +1,16 @@
 cmake_minimum_required(VERSION 3.25 FATAL_ERROR)
 
+set(CMAKE_MESSAGE_LOG_LEVEL FATAL_ERROR)
+
+
 project(mp_os LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 message([[VCPKG toolchain setup example. It is needed for some libraries. Highly recommended to pass it by command line arguments for cmake configuration (IDE can help with this).
-        set(VCPKG_TARGET_TRIPLET x64-windows)
-        set(CMAKE_TOOLCHAIN_FILE C:/Programming/vcpkg/scripts/buildsystems/vcpkg.cmake)]])
+        set(VCPKG_TARGET_TRIPLET x64-linux)
+        set(CMAKE_TOOLCHAIN_FILE /home/vov_ub/vcpkg/scripts/buildsystems/vcpkg.cmake)]])
 
 include(FetchContent)
 FetchContent_Declare(
@@ -24,8 +27,11 @@ FetchContent_MakeAvailable(nlohmann_json)
 
 find_package(Boost COMPONENTS system container REQUIRED) # Ставить через vcpkg
 
+find_package(Crow CONFIG REQUIRED)
+find_package(httplib CONFIG REQUIRED)
+
+add_subdirectory(logger)
 add_subdirectory(allocator)
 add_subdirectory(arithmetic)
 add_subdirectory(associative_container)
 add_subdirectory(common)
-add_subdirectory(logger)
