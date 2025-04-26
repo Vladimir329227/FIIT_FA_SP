@@ -3,58 +3,74 @@
 
 allocator_global_heap::allocator_global_heap(
     logger *logger)
+    : _logger(logger)
 {
-    throw not_implemented("allocator_global_heap::allocator_global_heap(logger *)", "your code should be here...");
+    debug_with_guard("init allocator_global_heap");
 }
 
 [[nodiscard]] void *allocator_global_heap::do_allocate_sm(
     size_t size)
 {
-    throw not_implemented("[[nodiscard]] void *allocator_global_heap::do_allocate_sm(size_t)", "your code should be here...");
+    debug_with_guard("do_allocate_sm");
+
+    try
+    {
+        void *ptr = ::operator new(size);
+        trace_with_guard("Allocated " + std::to_string(size));
+        return ptr;
+    }
+    catch (const std::bad_alloc &ex)
+    {
+        error_with_guard("Allocation failed: " + std::string(ex.what()));
+        return nullptr;
+    }
 }
 
 void allocator_global_heap::do_deallocate_sm(
     void *at)
 {
-    throw not_implemented("void allocator_global_heap::do_deallocate_sm(void *)", "your code should be here...");
+    debug_with_guard("do_deallocate_sm");
+    operator delete(at);
 }
 
 inline logger *allocator_global_heap::get_logger() const
 {
-    throw not_implemented("inline logger *allocator_global_heap::get_logger() const", "your code should be here...");
+    return _logger;
 }
 
 inline std::string allocator_global_heap::get_typename() const
 {
-    throw not_implemented("inline std::string allocator_global_heap::get_typename() const", "your code should be here...");
+    return "allocator_global_heap";
 }
 
 allocator_global_heap::~allocator_global_heap()
 {
-    throw not_implemented("allocator_global_heap::~allocator_global_heap()", "your code should be here...");
+    debug_with_guard("end allocator_global_heap");
 }
 
 allocator_global_heap::allocator_global_heap(const allocator_global_heap &other)
-{
-    throw not_implemented("allocator_global_heap::allocator_global_heap(const allocator_global_heap &other)", "your code should be here...");
-}
+    :_logger(other._logger)
+{}
 
 allocator_global_heap &allocator_global_heap::operator=(const allocator_global_heap &other)
 {
-    throw not_implemented("allocator_global_heap &allocator_global_heap::operator=(const allocator_global_heap &other)", "your code should be here...");
+    if (this != &other)
+        _logger = other._logger;
+    return *this;
 }
 
 bool allocator_global_heap::do_is_equal(const std::pmr::memory_resource &other) const noexcept
 {
-    throw not_implemented("bool allocator_global_heap::do_is_equal(const std::pmr::memory_resource &other) const noexcept", "your code should be here...");
+    return dynamic_cast<const allocator_global_heap *>(&other) != nullptr;
 }
 
 allocator_global_heap::allocator_global_heap(allocator_global_heap &&other) noexcept
-{
-    throw not_implemented("allocator_global_heap::allocator_global_heap(allocator_global_heap &&) noexcept", "your code should be here...");
-}
+    :_logger(std::exchange(other._logger, nullptr))
+{}
 
 allocator_global_heap &allocator_global_heap::operator=(allocator_global_heap &&other) noexcept
 {
-    throw not_implemented("allocator_global_heap &allocator_global_heap::operator=(allocator_global_heap &&) noexcept", "your code should be here...");
+    if (this != &other)
+        _logger = std::exchange(other._logger, nullptr);
+    return *this;
 }

@@ -8,9 +8,18 @@ project(mp_os LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(VCPKG_TARGET_TRIPLET x64-windows)
+set(CMAKE_TOOLCHAIN_FILE C:/vcpkg/scripts/buildsystems/vcpkg.cmake)
+set(DCMAKE_TOOLCHAIN_FILE C:/vcpkg/scripts/buildsystems/vcpkg.cmake)
+set(DVCPKG_TARGET_TRIPLET x64-windows)
+
+#message([[VCPKG toolchain setup example. It is needed for some libraries. Highly recommended to pass it by command line arguments for cmake configuration (IDE can help with this).
+#        set(VCPKG_TARGET_TRIPLET x64-linux)
+#        set(CMAKE_TOOLCHAIN_FILE /home/vov_ub/vcpkg/scripts/buildsystems/vcpkg.cmake)]])
+
 message([[VCPKG toolchain setup example. It is needed for some libraries. Highly recommended to pass it by command line arguments for cmake configuration (IDE can help with this).
-        set(VCPKG_TARGET_TRIPLET x64-linux)
-        set(CMAKE_TOOLCHAIN_FILE /home/vov_ub/vcpkg/scripts/buildsystems/vcpkg.cmake)]])
+        set(VCPKG_TARGET_TRIPLET x64-windows)
+        set(CMAKE_TOOLCHAIN_FILE C:\vcpkg\scripts\buildsystems\vcpkg.cmake)]])
 
 include(FetchContent)
 FetchContent_Declare(

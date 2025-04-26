@@ -1,22 +1,27 @@
 # Distributed under the OSI-approved BSD 3-Clause License.  See accompanying
-# file Copyright.txt or https://cmake.org/licensing for details.
+# file LICENSE.rst or https://cmake.org/licensing for details.
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION ${CMAKE_VERSION}) # this file comes with cmake
 
+# If CMAKE_DISABLE_SOURCE_CHANGES is set to true and the source directory is an
+# existing directory in our source tree, calling file(MAKE_DIRECTORY) on it
+# would cause a fatal error, even though it would be a no-op.
+if(NOT EXISTS "C:/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-src")
+  file(MAKE_DIRECTORY "C:/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-src")
+endif()
 file(MAKE_DIRECTORY
-  "/mnt/c/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-src"
-  "/mnt/c/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-build"
-  "/mnt/c/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-subbuild/googletest-populate-prefix"
-  "/mnt/c/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-subbuild/googletest-populate-prefix/tmp"
-  "/mnt/c/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp"
-  "/mnt/c/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-subbuild/googletest-populate-prefix/src"
-  "/mnt/c/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp"
+  "C:/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-build"
+  "C:/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-subbuild/googletest-populate-prefix"
+  "C:/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-subbuild/googletest-populate-prefix/tmp"
+  "C:/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp"
+  "C:/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-subbuild/googletest-populate-prefix/src"
+  "C:/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp"
 )
 
-set(configSubDirs )
+set(configSubDirs Debug)
 foreach(subDir IN LISTS configSubDirs)
-    file(MAKE_DIRECTORY "/mnt/c/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/${subDir}")
+    file(MAKE_DIRECTORY "C:/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/${subDir}")
 endforeach()
 if(cfgdir)
-  file(MAKE_DIRECTORY "/mnt/c/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp${cfgdir}") # cfgdir has leading slash
+  file(MAKE_DIRECTORY "C:/Users/vova/Desktop/lab/lab2/FIIT_FA_SP/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp${cfgdir}") # cfgdir has leading slash
 endif()

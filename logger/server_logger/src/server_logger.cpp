@@ -2,6 +2,8 @@
 #include <httplib.h>
 #include "../include/server_logger.h"
 #include <nlohmann/json.hpp>
+#define ASIO_STANDALONE
+#include <asio.hpp>
 
 #ifdef _WIN32
 #include <process.h>
@@ -11,21 +13,21 @@
 
 static std::string get_current_date() {
     auto now = std::chrono::system_clock::now();
-    auto in_time = std::chrono::system_clock::to_time_t(now);
-    std::tm tm_buf;
-    gmtime_r(&in_time, &tm_buf);
+    time_t in_time = std::chrono::system_clock::to_time_t(now);
+    tm tm_buf; // Correct: Declare as tm struct
+    gmtime_s(&tm_buf, &in_time); // Populate tm struct
     std::stringstream ss;
-    ss << std::put_time(&tm_buf, "%Y-%m-%d");
+    ss << std::put_time(&tm_buf, "%Y-%m-%d"); // Pass address of tm struct
     return ss.str();
 }
 
 static std::string get_current_time() {
     auto now = std::chrono::system_clock::now();
-    auto in_time = std::chrono::system_clock::to_time_t(now);
-    std::tm tm_buf;
-    gmtime_r(&in_time, &tm_buf);
+    time_t in_time = std::chrono::system_clock::to_time_t(now);
+    tm tm_buf; // Correct: Declare as tm struct
+    gmtime_s(&tm_buf, &in_time); // Populate tm struct
     std::stringstream ss;
-    ss << std::put_time(&tm_buf, "%H:%M:%S");
+    ss << std::put_time(&tm_buf, "%H:%M:%S"); // Pass address of tm struct
     return ss.str();
 }
 

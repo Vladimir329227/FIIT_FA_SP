@@ -63,6 +63,13 @@ private:
     static constexpr const size_t min_k = __detail::nearest_greater_k_of_2(occupied_block_metadata_size);
 
 public:
+    std::vector<std::pair<void*, allocator_buddies_system::block_info>> get_blocks_with_addresses() const noexcept;
+    allocator_with_fit_mode::fit_mode get_fit_mode() const noexcept;
+    std::string format_blocks_info() const noexcept;
+
+    size_t get_total_space_power() const noexcept;
+
+    void* get_pool_end() const noexcept;
 
     explicit allocator_buddies_system(
             size_t space_size_power_of_two,

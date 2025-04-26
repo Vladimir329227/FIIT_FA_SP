@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\vova\Desktop\lab\lab2\FIIT_FA_SP\logger\client_logger\src\client_logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\vova\Desktop\lab\lab2\FIIT_FA_SP\logger\client_logger\src\client_logger_builder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\vova\Desktop\lab\lab2\FIIT_FA_SP\logger\client_logger\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="C:\Users\vova\Desktop\lab\lab2\FIIT_FA_SP\build\_deps\nlohmann_json-src\nlohmann_json.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4969B404-2EBA-3A78-A4FA-81AB850C3876}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

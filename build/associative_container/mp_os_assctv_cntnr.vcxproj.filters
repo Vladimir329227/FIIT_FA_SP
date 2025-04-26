@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\vova\Desktop\lab\lab2\FIIT_FA_SP\associative_container\src\hhh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\vova\Desktop\lab\lab2\FIIT_FA_SP\associative_container\include\associative_container.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\vova\Desktop\lab\lab2\FIIT_FA_SP\associative_container\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{9C24D23D-031E-37C1-ABA6-AF4F2C9DF22E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4969B404-2EBA-3A78-A4FA-81AB850C3876}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

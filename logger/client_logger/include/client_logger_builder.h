@@ -16,11 +16,13 @@ private:
 
     std::string _format;
 
+    std::string _destination;
+
     void parse_severity(logger::severity, nlohmann::json& j);
 
 public:
 
-    client_logger_builder() : _format("%m"){};
+    client_logger_builder() : _format("%m"), _destination("http://127.0.0.1:9200"){};
 
     client_logger_builder(
         client_logger_builder const &other) =delete;

@@ -14,8 +14,9 @@ target_include_directories(
 target_link_libraries(
         mp_os_lggr_srvr_lggr 
         PUBLIC 
-        httplib::httplib)
-
+        httplib::httplib
+        ws2_32
+        mswsock)
 
 target_link_libraries(
         mp_os_lggr_srvr_lggr

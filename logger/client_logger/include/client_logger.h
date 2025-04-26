@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <forward_list>
 #include <fstream>
+#include <mutex>
 
 class client_logger_builder;
 
@@ -18,11 +19,12 @@ private:
     class refcounted_stream final
     {
         static std::unordered_map<std::string, std::pair<size_t, std::ofstream>> _global_streams;
-
         std::pair<std::string, std::ofstream*> _stream;
         friend client_logger;
         friend client_logger_builder;
     public:
+
+        static std::mutex _global_streams_mutex;
 
         explicit refcounted_stream(const std::string& path);
 
