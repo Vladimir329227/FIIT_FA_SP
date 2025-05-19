@@ -73,3 +73,63 @@ server::server(uint16_t port)
     // Запуск сервера в конструкторе
     app.port(port).run();
 }
+
+/*
+server::server(uint16_t port)
+{
+    // Настройка маршрутов
+    CROW_ROUTE(app, "/log")
+            .methods("POST"_method)
+                    ([this](const crow::request& req) {
+                        std::lock_guard<std::mutex> lock(_mut);
+
+                        try {
+                            // Парсинг JSON
+                            auto data = json::parse(req.body);
+
+                            // Вывод полной информации о запросе
+                            std::cout << "\n=== NEW LOG MESSAGE ===" << std::endl;
+                            std::cout << "From IP: " << req.remote_ip_address << std::endl;
+                            std::cout << "User-Agent: " << req.get_header_value("User-Agent") << std::endl;
+                            std::cout << "Content-Length: " << req.body.size() << std::endl;
+
+                            // Извлечение и отображение основных данных
+                            std::cout << "\n[HEADER]" << std::endl;
+                            std::cout << "PID:      " << data["pid"].get<int>() << std::endl;
+                            std::cout << "Severity: " << data["severity"].get<std::string>() << std::endl;
+
+                            // Отображение сообщения
+                            std::cout << "\n[MESSAGE]" << std::endl;
+                            std::cout << data["message"].get<std::string>() << std::endl;
+
+                            // Отображение информации о потоках
+                            std::cout << "\n[STREAMS]" << std::endl;
+                            for (const auto& stream : data["streams"]) {
+                                std::string type = stream["type"];
+                                if (type == "file") {
+                                    std::cout << "File: " << stream["path"].get<std::string>() << std::endl;
+                                } else if (type == "console") {
+                                    std::cout << "Console output" << std::endl;
+                                }
+                            }
+
+                            std::cout << "=== END OF MESSAGE ===\n" << std::endl;
+                            return crow::response(200, "Message received");
+                        }
+                        catch (const json::exception& e) {
+                            std::cerr << "JSON Error: " << e.what() << std::endl;
+                            return crow::response(400, "JSON error: " + std::string(e.what()));
+                        }
+                        catch (const std::exception& e) {
+                            std::cerr << "Server Error: " << e.what() << std::endl;
+                            return crow::response(500, "Server error: " + std::string(e.what()));
+                        }
+                    });
+
+    // Запуск сервера с дополнительными параметрами
+    app.port(port)
+            .bindaddr("0.0.0.0")
+            .multithreaded()
+            .run();
+}
+*/

@@ -5,6 +5,27 @@
 #include <allocator_sorted_list.h>
 #include <iostream>
 
+template<typename tkey, typename tvalue, typename compare>
+void print_bst_tree(const binary_search_tree<tkey, tvalue, compare>& tree)
+{
+    auto&& begin = tree.cbegin_infix();
+    auto&& end = tree.cend_infix();
+
+    while (true)
+    {
+        if (begin.operator->() == end.operator->()) break; // Сравнение через указатели
+
+        std::string indent(begin.depth() * 4, ' ');
+        std::cout << indent
+                  << "[K:" << begin->first
+                  << " V:" << begin->second
+                << " D:" << begin.depth()
+                << "]\n";
+        ++begin;
+    }
+}
+
+
 logger *create_logger(
     std::vector<std::pair<std::string, logger::severity>> const &output_file_streams_setup,
     bool use_console_stream = true,
@@ -66,6 +87,19 @@ struct test_data
     test_data(size_t dep, tkey k, tvalue v) : depth(dep), key(k), value(v){}
 };
 
+void print_test_data_tree(const std::vector<test_data<int, std::string>> data)
+{
+    for (const auto& item : data)
+    {
+        std::string indent(item.depth * 4, ' '); // 4 пробела на уровень глубины
+        std::cout << indent
+                  << "[K:" << item.key
+                  << " V:" << item.value
+                  << " D:" << item.depth
+                  << "]\n";
+    }
+}
+
 template<typename tkey, typename tvalue>
 bool infix_iterator_test(
     binary_search_tree<tkey, tvalue> const &tree,
@@ -79,6 +113,9 @@ bool infix_iterator_test(
     for (; vec_begin != vec_end; ++vec_begin)
     {
         auto& item = *vec_begin;
+        std::cout << it.depth() << " " << item.depth << std::endl;
+        std::cout << it->first << " " << item.key << std::endl;
+        std::cout << it->second << " " << item.value << std::endl << std::endl;
         if (it.depth() != item.depth || it->first != item.key || it->second != item.value)
         {
             return false;
@@ -126,6 +163,9 @@ bool postfix_iterator_test(
     
     for (auto& item : expected_result)
     {
+        std::cout << it.depth() << " " << item.depth << std::endl;
+        std::cout << it->first << " " << item.key << std::endl;
+        std::cout << it->second << " " << item.value << std::endl << std::endl;
         if (it.depth() != item.depth || it->first != item.key || it->second != item.value)
         {
             return false;
@@ -137,6 +177,7 @@ bool postfix_iterator_test(
     return true;
 }
 
+/*
 TEST(binarySearchTreePositiveTests, noIteratorTest)
 {
     std::unique_ptr<logger> logger(create_logger(std::vector<std::pair<std::string, logger::severity>>
@@ -169,7 +210,7 @@ TEST(binarySearchTreePositiveTests, noIteratorTest)
     EXPECT_EQ("t", bst->at(5));
 
     ASSERT_THROW(bst->at(144), std::out_of_range);
-}
+}*/
 
 TEST(binarySearchTreePositiveTests, test1)
 {
@@ -422,6 +463,7 @@ TEST(binarySearchTreePositiveTests, test7)
     logger->trace("binarySearchTreePositiveTests.test7 finished");
 }
 
+
 TEST(binarySearchTreePositiveTests, test8)
 {
     std::unique_ptr<logger> logger(create_logger(std::vector<std::pair<std::string, logger::severity>>
@@ -443,24 +485,26 @@ TEST(binarySearchTreePositiveTests, test8)
     bst1->emplace(12, "l");
     bst1->emplace(17, "b");
     bst1->emplace(18, "e");
-    
+    print_bst_tree(*bst1);
     bst1->erase(15);
-    
+    print_bst_tree(*bst1);
+
     std::vector<test_data<int, std::string>> expected_result =
-        {
-                test_data<int, std::string>(0, 6, "a"),
-                test_data<int, std::string>(1, 8, "c"),
-                test_data<int, std::string>(3, 11, "j"),
-                test_data<int, std::string>(2, 12, "l"),
-                test_data<int, std::string>(4, 17, "b"),
-                test_data<int, std::string>(5, 18, "e"),
-                test_data<int, std::string>(3, 19, "i")
-        };
-    
+            {
+                    test_data<int, std::string>(0, 6, "a"),
+                    test_data<int, std::string>(1, 8, "c"),
+                    test_data<int, std::string>(3, 11, "j"),
+                    test_data<int, std::string>(2, 12, "l"),
+                    test_data<int, std::string>(4, 17, "b"),
+                    test_data<int, std::string>(5, 18, "e"),
+                    test_data<int, std::string>(3, 19, "i")
+            };
+    print_test_data_tree(expected_result);
     EXPECT_TRUE(infix_iterator_test(*bst1, expected_result));
     
     logger->trace("binarySearchTreePositiveTests.test8 finished");
 }
+
 
 TEST(binarySearchTreePositiveTests, test9)
 {

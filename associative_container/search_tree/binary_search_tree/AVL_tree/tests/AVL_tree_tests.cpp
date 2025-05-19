@@ -4,6 +4,7 @@
 #include <client_logger_builder.h>
 #include <iostream>
 
+
 logger *create_logger(
         std::vector<std::pair<std::string, logger::severity>> const &output_file_streams_setup,
         bool use_console_stream = true,
@@ -125,6 +126,11 @@ bool postfix_iterator_test(
 
     for (auto& item : expected_result)
     {
+        std::cout << it.depth() << " " << item.depth << std::endl;
+        std::cout << it->first << " " << item.key << std::endl;
+        std::cout << it->second << " " << item.value << std::endl;
+        std::cout << it.get_height() << " " << item.height << std::endl << std::endl;
+
         if (it.depth() != item.depth || it->first != item.key || it->second != item.value || it.get_height() != item.height)
         {
             return false;
@@ -166,7 +172,8 @@ TEST(AVLTreePositiveTests, test1)
             test_data<int, std::string>(2, 14, "e", 1),
             test_data<int, std::string>(1, 15, "c", 2)
         };
-    
+
+
     EXPECT_TRUE(infix_iterator_test(*avl, expected_result));
     
     logger->trace("AVLTreePositiveTests.test1 finished");
@@ -224,8 +231,10 @@ TEST(AVLTreePositiveTests, test3)
     avl->emplace("b", 2);
     avl->emplace("c", 15);
     avl->emplace("d", 3);
+    print_avl_tree(*avl);
     avl->emplace("e", 4);
-    
+    print_avl_tree(*avl);
+
     std::vector<test_data<std::string, int>> expected_result =
         {
                 test_data<std::string, int>(1, "a", 1, 1),
@@ -234,7 +243,6 @@ TEST(AVLTreePositiveTests, test3)
                 test_data<std::string, int>(1, "d", 3, 2),
                 test_data<std::string, int>(0, "b", 2, 3)
         };
-    
     EXPECT_TRUE(postfix_iterator_test(*avl, expected_result));
     
     logger->trace("AVLTreePositiveTests.test3 finished");
@@ -331,6 +339,7 @@ TEST(AVLTreePositiveTests, test6)
     auto avl1 = std::make_unique<AVL_tree<int, std::string>>(std::less<int>(), nullptr, logger.get());
     
     avl1->emplace(6, "a");
+
     avl1->emplace(8, "c");
     avl1->emplace(15, "x");
     avl1->emplace(4, "j");
@@ -338,7 +347,7 @@ TEST(AVLTreePositiveTests, test6)
     avl1->emplace(5, "b");
     
     avl1->erase(5);
-    
+
     std::vector<test_data<int, std::string>> expected_result =
         {
             test_data<int, std::string>(2, 1, "i", 1),
@@ -371,12 +380,13 @@ TEST(AVLTreePositiveTests, test7)
     avl1->emplace(8, "c");
     avl1->emplace(15, "x");
     avl1->emplace(4, "j");
+
     avl1->emplace(3, "i");
     avl1->emplace(2, "l");
     avl1->emplace(5, "b");
-    
+    std::cout << std::endl;
     avl1->erase(3);
-    
+    print_avl_tree(*avl1);
     std::vector<test_data<int, std::string>> expected_result =
         {
             test_data<int, std::string>(2, 2, "l", 1),
@@ -391,6 +401,19 @@ TEST(AVLTreePositiveTests, test7)
     
     logger->trace("AVLTreePositiveTests.test7 finished");
     
+}
+
+void print_test_data_tree(const std::vector<test_data<int, std::string>> data)
+{
+    for (const auto& item : data)
+    {
+        std::string indent(item.depth * 4, ' '); // 4 пробела на уровень глубины
+        std::cout << indent
+                  << "[K:" << item.key
+                  << " V:" << item.value
+                  << " D:" << item.depth
+                  << "]\n";
+    }
 }
 
 TEST(AVLTreePositiveTests, test8)
@@ -416,9 +439,10 @@ TEST(AVLTreePositiveTests, test8)
     avl1->emplace(12, "l");
     avl1->emplace(17, "b");
     avl1->emplace(18, "e");
-    
+
     avl1->erase(15);
-    
+    print_avl_tree(*avl1);
+
     std::vector<test_data<int, std::string>> expected_result =
         {
             test_data<int, std::string>(2, 6, "a", 1),
@@ -429,6 +453,8 @@ TEST(AVLTreePositiveTests, test8)
             test_data<int, std::string>(1, 18, "e", 3),
             test_data<int, std::string>(2, 19, "i", 1)
         };
+
+    print_test_data_tree(expected_result);
     
     EXPECT_TRUE(infix_iterator_test(*avl1, expected_result));
     

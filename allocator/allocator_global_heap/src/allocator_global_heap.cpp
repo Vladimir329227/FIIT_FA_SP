@@ -12,25 +12,25 @@ allocator_global_heap::allocator_global_heap(
     size_t size)
 {
     debug_with_guard("do_allocate_sm");
-
+    void *ptr;
     try
     {
-        void *ptr = ::operator new(size);
+        ptr = ::operator new(size);
         trace_with_guard("Allocated " + std::to_string(size));
-        return ptr;
     }
     catch (const std::bad_alloc &ex)
     {
         error_with_guard("Allocation failed: " + std::string(ex.what()));
-        return nullptr;
     }
+    return ptr;
+
 }
 
 void allocator_global_heap::do_deallocate_sm(
     void *at)
 {
     debug_with_guard("do_deallocate_sm");
-    operator delete(at);
+    ::operator delete(at);
 }
 
 inline logger *allocator_global_heap::get_logger() const

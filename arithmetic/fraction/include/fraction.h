@@ -98,6 +98,8 @@ public:
 
     fraction lg(fraction const &epsilon = fraction(1_bi, 1000000_bi)) const;
 
+    fraction abs() const;
+
 };
 
 #endif //MP_OS_FRACTION_H

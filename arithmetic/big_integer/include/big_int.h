@@ -11,6 +11,7 @@
 #include <concepts>
 #include <pp_allocator.h>
 #include <not_implemented.h>
+#include <algorithm>
 
 namespace __detail
 {
@@ -130,6 +131,8 @@ public:
 
     big_int operator+(const big_int& other) const;
     big_int operator-(const big_int& other) const;
+    big_int operator-() &&;
+    big_int operator-() const &;
     big_int operator*(const big_int& other) const;
     big_int operator/(const big_int& other) const;
     big_int operator%(const big_int& other) const;
@@ -164,18 +167,65 @@ public:
     friend std::istream &operator>>(std::istream &stream, big_int &value);
 
     std::string to_string() const;
+
+    void optimise();
+    big_int split(size_t start, size_t end) const;
+    bool is_zero() const noexcept;
+    unsigned int divide_by_small(unsigned int divisor);
+    big_int abs(const big_int& num);
 };
 
 template<class alloc>
 big_int::big_int(const std::vector<unsigned int, alloc> &digits, bool sign, pp_allocator<unsigned int> allocator)
+        : _sign(sign), _digits(allocator)
 {
-    throw not_implemented("template<class alloc> big_int::big_int(const std::vector<unsigned int, alloc> &digits, bool sign, pp_allocator<unsigned int> allocator)", "your code should be here...");
+    // Копируем цифры, пропуская ведущие нули
+    auto it = digits.rbegin();
+    auto end = digits.rend();
+
+    while (it != end && *it == 0) {
+        ++it;
+    }
+
+    _digits.reserve(std::distance(it, end));
+    for (; it != end; ++it) {
+        _digits.push_back(*it);
+    }
+
+    // Корректируем порядок: старшие разряды в конце вектора
+    std::reverse(_digits.begin(), _digits.end());
+
+    optimise();
 }
 
 template<std::integral Num>
-big_int::big_int(Num d, pp_allocator<unsigned int>)
+big_int::big_int(Num d, pp_allocator<unsigned int> alloc)
+        : _sign(true), _digits(alloc)
 {
-    throw not_implemented("template<std::integral Num>big_int::big_int(Num, pp_allocator<unsigned int>)", "your code should be here...");
+    using Unsigned = std::make_unsigned_t<Num>;
+    uint64_t val; // Используем 64-битный контейнер
+
+    // Обработка знака и преобразование в 64-битное число
+    if constexpr (std::is_signed_v<Num>) {
+        _sign = (d >= 0);
+        val = static_cast<uint64_t>(std::abs(d));
+    } else {
+        val = static_cast<uint64_t>(d);
+    }
+
+    constexpr size_t bits_per_digit = sizeof(unsigned int) * CHAR_BIT;
+    constexpr uint64_t max_digit = std::numeric_limits<unsigned int>::max();
+
+    if (val == 0) {
+        _digits.push_back(0);
+    } else {
+        while (val != 0) {
+            _digits.push_back(static_cast<unsigned int>(val & max_digit));
+            val >>= bits_per_digit; // Корректный сдвиг для 64-битного числа
+        }
+    }
+
+    optimise();
 }
 
 big_int operator""_bi(unsigned long long n);

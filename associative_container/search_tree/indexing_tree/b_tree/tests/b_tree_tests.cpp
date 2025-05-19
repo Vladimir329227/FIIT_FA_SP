@@ -158,6 +158,7 @@ TEST(bTreePositiveTests, test1)
     tree.emplace(3, std::string("d"));
     tree.emplace(4, std::string("e"));
     tree.emplace(27, std::string("f"));
+    print_tree(tree);
 
     EXPECT_TRUE(infix_const_iterator_test(tree, expected_result));
 
